@@ -267,11 +267,8 @@ function BlinkingCursor() {
     <span className="inline-flex items-center gap-0.5">
       <span>&gt;</span>
       <span
-        className="inline-block w-1.5 h-3.5 align-middle"
-        style={{
-          backgroundColor: "var(--accent-green)",
-          animation: "blink 1.1s step-end infinite",
-        }}
+        className="inline-block w-1.5 h-3.5 align-middle animate-blink"
+        style={{ backgroundColor: "var(--accent-green)" }}
       />
     </span>
   );

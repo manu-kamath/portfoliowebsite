@@ -53,11 +53,8 @@ export function Hero() {
           <span className="section-label">// design leader</span>
           <TerminalTrigger>
             <span
-              className="inline-block w-1.5 h-3 align-middle"
-              style={{
-                backgroundColor: "var(--accent-green)",
-                animation: "blink 1.1s step-end infinite",
-              }}
+              className="inline-block w-1.5 h-3 align-middle animate-blink"
+              style={{ backgroundColor: "var(--accent-green)" }}
             />
           </TerminalTrigger>
         </motion.div>
