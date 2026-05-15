@@ -1,6 +1,7 @@
 "use client";
 
 import { TerminalTrigger } from "@/components/terminal/Terminal";
+import { MKLogo } from "@/components/nav/Nav";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -18,18 +19,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Left */}
           <div className="flex flex-col gap-3">
-            <span
-              className="text-sm font-bold tracking-tight"
-              style={{
-                fontFamily: "var(--font-sans)",
-                background: "linear-gradient(45deg, var(--accent-green), var(--accent-blue))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              MK
-            </span>
+            <MKLogo size={32} />
             <nav className="flex gap-5">
               {navLinks.map(({ label, href }) => (
                 <a

@@ -114,33 +114,34 @@ export function Nav() {
   );
 }
 
-function MKLogo() {
+// Exact paths from Figma — Logo/MK-Nav (node 42:8)
+// Each letter is a 200×200 path scaled to 17×17, centred in a 40×40 container
+export function MKLogo({ size = 40 }: { size?: number }) {
+  const s = (17 / 200) * (size / 40); // scale factor
+  const pad = 2 * (size / 40);        // 2px side padding, scaled
+  const top = 10 * (size / 40);       // 10px top padding, scaled
+  const gap = 2 * (size / 40);        // 2px gap between letters, scaled
+  const letterW = 17 * (size / 40);
+
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="mk-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7cba6e" />
-          <stop offset="100%" stopColor="#5a8ab4" />
-        </linearGradient>
-      </defs>
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="MK"
+    >
       {/* M */}
-      <path
-        d="M4 24V8L11 18L18 8V24"
-        stroke="url(#mk-grad)"
-        strokeWidth="2.2"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
-        fill="none"
-      />
+      <g transform={`translate(${pad}, ${top}) scale(${s})`}>
+        <path d="M0 0L100 100L200 0V200H0V0Z" fill="#30CC81" />
+        <path d="M0 200H200L0 0V200Z" fill="#32E45F" />
+      </g>
       {/* K */}
-      <path
-        d="M21 8V24M21 16L28 8M21 16L28 24"
-        stroke="url(#mk-grad)"
-        strokeWidth="2.2"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
-        fill="none"
-      />
+      <g transform={`translate(${pad + letterW + gap}, ${top}) scale(${s})`}>
+        <path d="M0 0H200L100 100L200 200H0V0Z" fill="#275ADC" />
+        <path d="M0 0V200L200 0H0Z" fill="#1691D7" />
+      </g>
     </svg>
   );
 }
