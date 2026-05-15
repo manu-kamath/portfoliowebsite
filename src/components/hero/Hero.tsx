@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { AsciiNoise } from "./AsciiNoise";
 import { MouseGlow } from "./MouseGlow";
+import { TerminalTrigger } from "@/components/terminal/Terminal";
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
@@ -42,22 +43,24 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
         {/* Section label */}
-        <motion.p
-          className="section-label mb-6 inline-flex items-center gap-2"
+        <motion.div
+          className="inline-flex items-center gap-2 mb-6"
           variants={fadeUp}
           initial="hidden"
           animate="visible"
           custom={0}
         >
-          // design leader
-          <span
-            className="inline-block w-1.5 h-3 align-middle"
-            style={{
-              backgroundColor: "var(--accent-green)",
-              animation: "blink 1.1s step-end infinite",
-            }}
-          />
-        </motion.p>
+          <span className="section-label">// design leader</span>
+          <TerminalTrigger>
+            <span
+              className="inline-block w-1.5 h-3 align-middle"
+              style={{
+                backgroundColor: "var(--accent-green)",
+                animation: "blink 1.1s step-end infinite",
+              }}
+            />
+          </TerminalTrigger>
+        </motion.div>
 
         {/* Headline */}
         <motion.h1

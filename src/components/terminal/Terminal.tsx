@@ -223,19 +223,19 @@ export function Terminal({ onClose }: TerminalProps) {
   );
 }
 
-export function TerminalTrigger() {
+export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="font-mono text-xs cursor-pointer select-none"
+        className="font-mono text-xs cursor-pointer select-none bg-transparent border-none outline-none p-0"
         style={{ color: "var(--text-secondary)" }}
         aria-label="Open terminal"
         title="Open terminal"
       >
-        <BlinkingCursor />
+        {children ?? <BlinkingCursor />}
       </button>
 
       <AnimatePresence>
