@@ -57,7 +57,7 @@ export function Contact() {
         >
           <p>
             Whether you're hiring, collaborating, curious about coaching,
-            or just want to say hello — my inbox is open.
+            or just want to say hello. My inbox is open.
           </p>
           <p>
             I respond to every message. Might take a day or two,

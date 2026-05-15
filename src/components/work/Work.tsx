@@ -37,7 +37,7 @@ export function Work() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          I lead design at the product level — strategy, systems,
+          I lead design at the product level: strategy, systems,
           execution. Here's a selection of what that looks like in practice.
         </motion.p>
 

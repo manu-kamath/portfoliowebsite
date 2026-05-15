@@ -55,7 +55,7 @@ export function Music() {
             to make something sound effortless.
           </p>
           <p>
-            I do covers — mostly singer-songwriter stuff, some
+            I do covers. Mostly singer-songwriter stuff, some
             classics, whatever I'm obsessed with that month.
           </p>
         </motion.div>

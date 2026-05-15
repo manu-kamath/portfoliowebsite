@@ -11,7 +11,7 @@ const cases = [
     role: "Design Lead",
     title: "One System to Rule Them All",
     description:
-      "Four separate UI libraries. Four teams pulling in different directions. I unified them into a single design system — cutting licensing costs by 50% and giving every product team a shared foundation to build on.",
+      "Four separate UI libraries. Four teams pulling in different directions. I unified them into a single design system, cutting licensing costs by 50% and giving every product team a shared foundation to build on.",
     slug: "soti",
   },
   {
@@ -29,7 +29,7 @@ const cases = [
     role: "Senior Interaction Designer",
     title: "Seating a Large Audience",
     description:
-      "Hundreds of seats. A 5-inch screen. Customers who needed to know exactly where they'd be sitting. I redesigned the seat layout system for South Asia's largest ticketing platform — cutting go-live time by up to 2 days and reducing post-booking complaints.",
+      "Hundreds of seats. A 5-inch screen. Customers who needed to know exactly where they'd be sitting. I redesigned the seat layout system for South Asia's largest ticketing platform, cutting go-live time by up to 2 days and reducing post-booking complaints.",
     slug: "bookmyshow",
   },
 ];

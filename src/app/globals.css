@@ -80,6 +80,12 @@ body::before {
   text-transform: lowercase;
 }
 
+/* ─── Blink animation (shared by hero cursor + terminal trigger) ────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 /* ─── Scrollbar ─────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }

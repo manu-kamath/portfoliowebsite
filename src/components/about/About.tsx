@@ -52,7 +52,7 @@ export function About() {
           >
             <p>
               I've spent my career at the intersection of design craft and
-              product thinking — leading teams, running critiques, shipping
+              product thinking. Leading teams, running critiques, shipping
               features, and occasionally being the one who says "let's zoom
               out for a second."
             </p>
@@ -64,13 +64,12 @@ export function About() {
             <p>
               Lately I've been asking a different question: what does it
               mean to lead a design team in an AI-native way? I'm figuring
-              that out in public — building tools, changing workflows, and
+              that out in public. Building tools, changing workflows, and
               staying curious about what the job looks like next.
             </p>
             <p>
-              Outside work, I build things for different reasons. I help
-              people get healthier and build a secondary source of income
-              through direct selling. And I make music — mostly covers,
+              Outside work, I build things to satisfy the urge to learn and
+              explore new ideas. And I make music, mostly covers,
               always with a guitar in hand.
             </p>
             <p style={{ color: "var(--text-primary)", fontStyle: "italic" }}>

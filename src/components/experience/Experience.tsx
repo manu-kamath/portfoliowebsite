@@ -31,7 +31,7 @@ const timeline = [
     role: "Senior Manager, Apps",
     years: "Aug 2018 – Dec 2021",
     description:
-      "Directed design across consumer product domains — contributed to 20% conversion growth and 10–50% revenue uplift.",
+      "Directed design across consumer product domains. Contributed to 20% conversion growth and 10–50% revenue uplift.",
   },
   {
     company: "BookMyShow",
