@@ -16,7 +16,7 @@ function CyclingWord() {
   }, []);
 
   return (
-    <span className="inline-flex items-baseline gap-1 font-mono text-xs" style={{ color: "var(--text-secondary)", opacity: 0.5 }}>
+    <span className="inline-flex items-baseline gap-1 font-mono text-xs" style={{ color: "var(--text-secondary)" }}>
       Built with{" "}
       <span className="relative inline-block" style={{ minWidth: "5rem" }}>
         <AnimatePresence mode="wait">

@@ -118,6 +118,7 @@ function CaseCard({
           src={cover}
           alt={title}
           fill
+          priority={slug === "soti"}
           className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 33vw"
         />

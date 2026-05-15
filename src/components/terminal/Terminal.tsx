@@ -76,6 +76,7 @@ export function Terminal({ onClose }: TerminalProps) {
   const [history, setHistory] = useState<string[]>([]);
   const [historyIdx, setHistoryIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -142,8 +143,34 @@ export function Terminal({ onClose }: TerminalProps) {
     }
   };
 
+  // Focus trap: cycle between close button and input only
+  const onDialogKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      onClose();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const focusable = [closeBtnRef.current, inputRef.current].filter(Boolean) as HTMLElement[];
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Terminal"
       className="rounded-lg overflow-hidden flex flex-col"
       style={{
         backgroundColor: "var(--surface-1)",
@@ -154,6 +181,7 @@ export function Terminal({ onClose }: TerminalProps) {
         fontFamily: "var(--font-mono)",
       }}
       onClick={() => inputRef.current?.focus()}
+      onKeyDown={onDialogKeyDown}
     >
       {/* Title bar */}
       <div
@@ -171,7 +199,9 @@ export function Terminal({ onClose }: TerminalProps) {
           </span>
         </div>
         <button
+          ref={closeBtnRef}
           onClick={(e) => { e.stopPropagation(); onClose(); }}
+          aria-label="Close terminal"
           className="text-xs transition-colors duration-200 cursor-pointer"
           style={{ color: "var(--text-secondary)" }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)")}
@@ -182,7 +212,13 @@ export function Terminal({ onClose }: TerminalProps) {
       </div>
 
       {/* Output */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 text-xs leading-5" style={{ minHeight: 0 }}>
+      <div
+        role="log"
+        aria-live="polite"
+        aria-label="Terminal output"
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-1 text-xs leading-5"
+        style={{ minHeight: 0 }}
+      >
         {lines.map((line, i) => (
           <div key={i}>
             {line.type === "input" ? (
@@ -202,7 +238,7 @@ export function Terminal({ onClose }: TerminalProps) {
         className="flex items-center gap-2 px-4 py-3 flex-shrink-0"
         style={{ borderTop: "1px solid var(--border)" }}
       >
-        <span className="text-xs" style={{ color: "var(--accent-green)" }}>
+        <span className="text-xs" aria-hidden="true" style={{ color: "var(--accent-green)" }}>
           &gt;
         </span>
         <input
@@ -211,6 +247,7 @@ export function Terminal({ onClose }: TerminalProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
+          aria-label="Terminal command input"
           className="flex-1 bg-transparent outline-none text-xs"
           style={{ color: "var(--text-primary)", caretColor: "var(--accent-green)" }}
           autoComplete="off"
@@ -225,14 +262,23 @@ export function Terminal({ onClose }: TerminalProps) {
 
 export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    // Return focus to the trigger that opened the dialog
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
 
   return (
     <>
       <button
+        ref={triggerRef}
         onClick={() => setOpen(true)}
         className="font-mono text-xs cursor-pointer select-none bg-transparent border-none outline-none p-0"
         style={{ color: "var(--text-secondary)" }}
         aria-label="Open terminal"
+        aria-haspopup="dialog"
         title="Open terminal"
       >
         {children ?? <BlinkingCursor />}
@@ -253,7 +299,7 @@ export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
               exit={{ opacity: 0, y: 12, scale: 0.97 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Terminal onClose={() => setOpen(false)} />
+              <Terminal onClose={handleClose} />
             </motion.div>
           </motion.div>
         )}

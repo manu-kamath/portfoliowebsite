@@ -71,6 +71,8 @@ export function Nav() {
           className="md:hidden flex flex-col gap-1.5 p-1"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <span
             className="block w-5 h-px bg-text-secondary transition-all duration-200"
@@ -95,7 +97,8 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden px-6 pb-6 pt-2 flex flex-col gap-4"
+            id="mobile-menu"
+          className="md:hidden px-6 pb-6 pt-2 flex flex-col gap-4"
             style={{ backgroundColor: "rgba(20, 20, 20, 0.95)" }}
           >
             {links.map(({ label, href }) => (
