@@ -1,26 +1,86 @@
 @import "tailwindcss";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
 
+/* ─── Design tokens ────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --bg:         #141414;
+  --surface-1:  #242424;
+  --surface-2:  #2a2a2a;
+
+  /* Text */
+  --text-primary:   #e8e4df;
+  --text-secondary: #9a948e;
+
+  /* Accents */
+  --accent-green:  #7cba6e;
+  --accent-blue:   #5a8ab4;
+  --accent-amber:  #d4922a;
+
+  /* Borders */
+  --border:        rgba(232, 228, 223, 0.08);
+  --border-strong: rgba(232, 228, 223, 0.14);
+
+  /* Glows */
+  --glow-green: 0 0 32px rgba(124, 186, 110, 0.18);
+  --glow-blue:  0 0 32px rgba(90, 138, 180, 0.18);
+  --glow-amber: 0 0 32px rgba(212, 146, 42, 0.18);
+
+  /* Fonts */
+  --font-sans: "Satoshi", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
+/* ─── Tailwind theme bridge ─────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg:             var(--bg);
+  --color-surface-1:      var(--surface-1);
+  --color-surface-2:      var(--surface-2);
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent-green:   var(--accent-green);
+  --color-accent-blue:    var(--accent-blue);
+  --color-accent-amber:   var(--accent-amber);
+  --color-border:         var(--border);
+  --font-sans:            var(--font-sans);
+  --font-mono:            var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Grain overlay ─────────────────────────────────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+}
+
+/* ─── Utility: section label (JetBrains Mono tag) ──────────────────────── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-green);
+  text-transform: lowercase;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 3px; }
