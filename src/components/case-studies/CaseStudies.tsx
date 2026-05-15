@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
@@ -13,6 +14,7 @@ const cases = [
     description:
       "Four separate UI libraries. Four teams pulling in different directions. I unified them into a single design system, cutting licensing costs by 50% and giving every product team a shared foundation to build on.",
     slug: "soti",
+    cover: "/case-studies/soti/cover.jpg",
   },
   {
     company: "Konnekt",
@@ -22,6 +24,7 @@ const cases = [
     description:
       "No existing product. No established pattern to follow. Just a problem worth solving and a whiteboard. I defined the design vision for a 0→1 digital marketplace in Kenya and took it from concept to MVP launch.",
     slug: "konnekt",
+    cover: "/case-studies/konnekt/cover.jpg",
   },
   {
     company: "BookMyShow",
@@ -31,6 +34,7 @@ const cases = [
     description:
       "Hundreds of seats. A 5-inch screen. Customers who needed to know exactly where they'd be sitting. I redesigned the seat layout system for South Asia's largest ticketing platform, cutting go-live time by up to 2 days and reducing post-booking complaints.",
     slug: "bookmyshow",
+    cover: "/case-studies/bookmyshow/cover.jpg",
   },
 ];
 
@@ -43,7 +47,7 @@ export function CaseStudies() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-5">
-          {cases.map(({ company, period, role, title, description, slug }, i) => (
+          {cases.map(({ company, period, role, title, description, slug, cover }, i) => (
             <CaseCard
               key={slug}
               company={company}
@@ -52,6 +56,7 @@ export function CaseStudies() {
               title={title}
               description={description}
               slug={slug}
+              cover={cover}
               isInView={isInView}
               delay={i * 0.1}
             />
@@ -90,10 +95,10 @@ export function CaseStudies() {
 }
 
 function CaseCard({
-  company, period, role, title, description, slug, isInView, delay,
+  company, period, role, title, description, slug, cover, isInView, delay,
 }: {
   company: string; period: string; role: string; title: string;
-  description: string; slug: string; isInView: boolean; delay: number;
+  description: string; slug: string; cover: string; isInView: boolean; delay: number;
 }) {
   return (
     <motion.article
@@ -107,28 +112,16 @@ function CaseCard({
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ borderColor: "rgba(124, 186, 110, 0.25)", y: -2 }}
     >
-      {/* Visual placeholder */}
-      <div
-        className="h-44 relative overflow-hidden"
-        style={{ backgroundColor: "var(--surface-2)" }}
-      >
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
+      {/* Cover image */}
+      <div className="h-44 relative overflow-hidden" style={{ backgroundColor: "var(--surface-2)" }}>
+        <Image
+          src={cover}
+          alt={title}
+          fill
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
-        <div className="absolute inset-0 flex items-end p-4">
-          <span
-            className="font-mono text-xs"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {company.toLowerCase().replace(/\s/g, "-")}
-          </span>
-        </div>
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(20,20,20,0.5) 0%, transparent 50%)" }} />
       </div>
 
       {/* Content */}
