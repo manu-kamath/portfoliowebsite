@@ -65,7 +65,7 @@ export function CaseStudies() {
 
         {/* Section footer */}
         <motion.div
-          className="mt-10 flex items-center gap-4"
+          className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.5 }}
@@ -77,7 +77,7 @@ export function CaseStudies() {
             onClick={() =>
               document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })
             }
-            className="font-mono text-sm transition-colors duration-200 cursor-pointer"
+            className="font-mono text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
             style={{ color: "var(--accent-green)" }}
             onMouseEnter={(e) =>
               ((e.currentTarget as HTMLButtonElement).style.color = "var(--accent-amber)")

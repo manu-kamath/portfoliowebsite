@@ -147,9 +147,9 @@ function TimelineEntry({
         >
           {company}
         </h3>
-        <div className="flex flex-wrap gap-x-3 gap-y-1 mb-2">
+        <div className="flex flex-wrap gap-x-3 gap-y-0.5 mb-2">
           <span
-            className="font-mono text-xs"
+            className="font-mono text-xs w-full md:w-auto"
             style={{ color: "var(--accent-green)" }}
           >
             {role}
