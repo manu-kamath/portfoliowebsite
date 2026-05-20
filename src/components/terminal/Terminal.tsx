@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 type Line = { type: "input" | "output" | "error"; text: string };
@@ -66,9 +67,10 @@ const RESPONSES: Record<string, string[]> = {
 
 interface TerminalProps {
   onClose: () => void;
+  isMobile?: boolean;
 }
 
-export function Terminal({ onClose }: TerminalProps) {
+export function Terminal({ onClose, isMobile }: TerminalProps) {
   const [lines, setLines] = useState<Line[]>([
     { type: "output", text: "manukamath.com terminal — type 'help' to start." },
   ]);
@@ -171,14 +173,15 @@ export function Terminal({ onClose }: TerminalProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Terminal"
-      className="rounded-lg overflow-hidden flex flex-col"
+      className="overflow-hidden flex flex-col"
       style={{
         backgroundColor: "var(--surface-1)",
         border: "1px solid var(--border-strong)",
         boxShadow: "var(--glow-green)",
-        width: "min(560px, 92vw)",
-        maxHeight: "420px",
         fontFamily: "var(--font-mono)",
+        ...(isMobile
+          ? { width: "100vw", height: "100%", borderRadius: 0 }
+          : { width: "min(560px, 92vw)", maxHeight: "420px", borderRadius: "0.5rem" }),
       }}
       onClick={() => inputRef.current?.focus()}
       onKeyDown={onDialogKeyDown}
@@ -202,8 +205,8 @@ export function Terminal({ onClose }: TerminalProps) {
           ref={closeBtnRef}
           onClick={(e) => { e.stopPropagation(); onClose(); }}
           aria-label="Close terminal"
-          className="text-xs transition-colors duration-200 cursor-pointer"
-          style={{ color: "var(--text-secondary)" }}
+          className="transition-colors duration-200 cursor-pointer px-2 py-1"
+          style={{ color: "var(--text-secondary)", fontSize: isMobile ? "1.25rem" : "0.75rem" }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)")}
           onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)")}
         >
@@ -216,8 +219,8 @@ export function Terminal({ onClose }: TerminalProps) {
         role="log"
         aria-live="polite"
         aria-label="Terminal output"
-        className="flex-1 overflow-y-auto px-4 py-4 space-y-1 text-xs leading-5"
-        style={{ minHeight: 0 }}
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-1 leading-6"
+        style={{ minHeight: 0, fontSize: isMobile ? "15px" : "0.75rem" }}
       >
         {lines.map((line, i) => (
           <div key={i}>
@@ -235,10 +238,10 @@ export function Terminal({ onClose }: TerminalProps) {
 
       {/* Input row */}
       <div
-        className="flex items-center gap-2 px-4 py-3 flex-shrink-0"
-        style={{ borderTop: "1px solid var(--border)" }}
+        className="flex items-center gap-2 px-4 flex-shrink-0"
+        style={{ borderTop: "1px solid var(--border)", paddingTop: isMobile ? "1rem" : "0.75rem", paddingBottom: isMobile ? "1.5rem" : "0.75rem" }}
       >
-        <span className="text-xs" aria-hidden="true" style={{ color: "var(--accent-green)" }}>
+        <span aria-hidden="true" style={{ color: "var(--accent-green)", fontSize: isMobile ? "15px" : "0.75rem" }}>
           &gt;
         </span>
         <input
@@ -248,8 +251,8 @@ export function Terminal({ onClose }: TerminalProps) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
           aria-label="Terminal command input"
-          className="flex-1 bg-transparent outline-none text-xs"
-          style={{ color: "var(--text-primary)", caretColor: "var(--accent-green)" }}
+          className="flex-1 bg-transparent outline-none"
+          style={{ color: "var(--text-primary)", caretColor: "var(--accent-green)", fontSize: "16px" }}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
@@ -260,15 +263,44 @@ export function Terminal({ onClose }: TerminalProps) {
   );
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [kbOffset, setKbOffset] = useState(0);
+  const isMobile = useIsMobile();
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   const handleClose = useCallback(() => {
     setOpen(false);
-    // Return focus to the trigger that opened the dialog
     requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
+
+  // On desktop only: keep terminal above the software keyboard
+  useEffect(() => {
+    if (!open || isMobile) { setKbOffset(0); return; }
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      setKbOffset(Math.max(0, window.innerHeight - vv.height - vv.offsetTop));
+    };
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    update();
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, [open, isMobile]);
 
   return (
     <>
@@ -284,26 +316,34 @@ export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
         {children ?? <BlinkingCursor />}
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-end justify-end p-6 md:p-10 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {open && (
             <motion.div
-              className="pointer-events-auto"
-              initial={{ opacity: 0, y: 24, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.97 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className={
+                isMobile
+                  ? "fixed inset-0 z-[60] flex flex-col pointer-events-auto"
+                  : "fixed inset-0 z-[60] flex items-end justify-end p-10 pointer-events-none"
+              }
+              style={isMobile ? {} : { bottom: kbOffset }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <Terminal onClose={handleClose} />
+              <motion.div
+                className={isMobile ? "pointer-events-auto flex-1 flex flex-col" : "pointer-events-auto"}
+                initial={isMobile ? { y: "100%" } : { opacity: 0, y: 24, scale: 0.96 }}
+                animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+                exit={isMobile ? { y: "100%" } : { opacity: 0, y: 12, scale: 0.97 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Terminal onClose={handleClose} isMobile={isMobile} />
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }
