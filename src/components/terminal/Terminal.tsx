@@ -285,9 +285,9 @@ export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
     requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
 
-  // On desktop only: keep terminal above the software keyboard
+  // Keep terminal above the software keyboard on all devices
   useEffect(() => {
-    if (!open || isMobile) { setKbOffset(0); return; }
+    if (!open) { setKbOffset(0); return; }
     const vv = window.visualViewport;
     if (!vv) return;
     const update = () => {
@@ -300,7 +300,7 @@ export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
       vv.removeEventListener("resize", update);
       vv.removeEventListener("scroll", update);
     };
-  }, [open, isMobile]);
+  }, [open]);
 
   return (
     <>
@@ -325,7 +325,7 @@ export function TerminalTrigger({ children }: { children?: React.ReactNode }) {
                   ? "fixed inset-0 z-[60] flex flex-col pointer-events-auto"
                   : "fixed inset-0 z-[60] flex items-end justify-end p-10 pointer-events-none"
               }
-              style={isMobile ? {} : { bottom: kbOffset }}
+              style={{ bottom: kbOffset }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
