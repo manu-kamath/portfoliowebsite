@@ -105,7 +105,7 @@ export function Contact() {
               </span>
             </a>
           ))}
-          <div className="flex items-center justify-between py-5">
+          <div className="flex items-start justify-between py-5">
             <span
               className="font-mono text-xs"
               style={{ color: "var(--text-secondary)" }}
@@ -113,10 +113,12 @@ export function Contact() {
               Location
             </span>
             <span
-              className="text-sm font-medium"
+              className="text-sm font-medium text-right"
               style={{ color: "var(--text-primary)" }}
             >
-              Kitchener, ON, Canada (Greater Toronto Area) · {tzLabel}
+              Kitchener, ON, Canada
+              <br />
+              (Greater Toronto Area) · {tzLabel}
             </span>
           </div>
         </motion.div>
