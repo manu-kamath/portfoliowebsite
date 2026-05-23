@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 
 const contactLinks = [
   {
@@ -25,6 +25,17 @@ const contactLinks = [
 export function Contact() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const tzLabel = useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto",
+        timeZoneName: "short",
+      })
+        .formatToParts(new Date())
+        .find((p) => p.type === "timeZoneName")?.value ?? "ET",
+    []
+  );
 
   return (
     <section id="contact" ref={ref} className="py-28">
@@ -78,10 +89,7 @@ export function Contact() {
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
               className="group flex items-center justify-between py-5 transition-colors duration-200"
-              style={{
-                borderBottom:
-                  i < contactLinks.length - 1 ? "1px solid var(--border)" : "none",
-              }}
+              style={{ borderBottom: "1px solid var(--border)" }}
             >
               <span
                 className="font-mono text-xs"
@@ -97,6 +105,20 @@ export function Contact() {
               </span>
             </a>
           ))}
+          <div className="flex items-center justify-between py-5">
+            <span
+              className="font-mono text-xs"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Location
+            </span>
+            <span
+              className="text-sm font-medium"
+              style={{ color: "var(--text-primary)" }}
+            >
+              Kitchener, ON, Canada (Greater Toronto Area) · {tzLabel}
+            </span>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -8,7 +8,7 @@ const stats = [
   { label: "Years of experience", value: "12+" },
   { label: "Industries", value: "Healthcare · E-commerce · Ad-tech · Enterprise SaaS" },
   { label: "Covers performed", value: "more than I planned" },
-  { label: "People coached", value: "growing" },
+  { label: "Currently based in", value: "Kitchener, ON, Canada" },
 ];
 
 export function About() {
