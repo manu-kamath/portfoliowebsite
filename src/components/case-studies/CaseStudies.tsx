@@ -9,10 +9,10 @@ const cases = [
   {
     company: "SOTI Inc.",
     period: "2022–Present",
-    role: "Design Lead",
-    title: "One System to Rule Them All",
+    role: "Design Manager",
+    title: "Elevating Design at SOTI",
     description:
-      "Four separate UI libraries. Four teams pulling in different directions. I unified them into a single design system, cutting licensing costs by 50% and giving every product team a shared foundation to build on.",
+      "A small, lean team managing multiple Figma libraries with overlapping components and minor differences across products. I led the consolidation into a single shared library — eliminating duplication, aligning the team around common components, and giving every product a shared foundation to build on.",
     slug: "soti",
     cover: "/case-studies/soti/cover.jpg",
   },

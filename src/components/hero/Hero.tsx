@@ -23,23 +23,6 @@ export function Hero() {
       <AsciiNoise />
       <MouseGlow />
 
-      {/* MK watermark */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-        aria-hidden="true"
-      >
-        <span
-          className="text-[30vw] font-bold leading-none tracking-tighter"
-          style={{
-            fontFamily: "var(--font-sans)",
-            color: "var(--text-primary)",
-            opacity: 0.015,
-          }}
-        >
-          MK
-        </span>
-      </div>
-
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
         {/* Section label */}
@@ -101,11 +84,11 @@ export function Hero() {
             className="px-6 py-3 text-sm font-medium rounded transition-all duration-200 cursor-pointer"
             style={{
               backgroundColor: "var(--accent-green)",
-              color: "#141414",
+              color: "var(--on-accent)",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                "var(--accent-amber)";
+                "var(--accent-green-hover)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLButtonElement).style.backgroundColor =

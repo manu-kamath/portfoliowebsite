@@ -9,15 +9,17 @@ type Line = { type: "input" | "output" | "error"; text: string };
 const RESPONSES: Record<string, string[]> = {
   help: [
     "Available commands:",
-    "  about      — who I am, in a few lines",
-    "  work       — what I ship",
-    "  music      — the guitar situation",
-    "  coaching   — how I help people build income",
-    "  contact    — email, LinkedIn, GitHub",
-    "  ls         — directory listing",
-    "  whoami     — one line",
-    "  clear      — clear terminal",
-    "  exit       — close this window",
+    "  about        — who I am, in a few lines",
+    "  work         — what I ship",
+    "  writing      — recent posts",
+    "  music        — the guitar situation",
+    "  coaching     — how I help people build income",
+    "  contact      — email, LinkedIn, GitHub",
+    "  ls           — directory listing",
+    "  cat latest   — most recent post",
+    "  whoami       — one line",
+    "  clear        — clear terminal",
+    "  exit         — close this window",
   ],
   about: [
     "Design leader with 12+ years across enterprise, health-tech, e-commerce, and ad-tech.",
@@ -53,14 +55,40 @@ const RESPONSES: Record<string, string[]> = {
     "LinkedIn → linkedin.com/in/manukamath",
     "GitHub   → github.com/manu-kamath",
   ],
+  writing: [
+    "> recent posts:",
+    "  2026.06  intent is the new differentiator   design · ai · leadership",
+    "",
+    "type 'cat latest' for the full dek, or visit /writing",
+  ],
+  blog: [
+    "> redirecting to writing...",
+    "  2026.06  intent is the new differentiator   design · ai · leadership",
+    "",
+    "type 'cat latest' for the full dek, or visit /writing",
+  ],
+  "cat latest": [
+    "title:  intent is the new differentiator",
+    "date:   2026.06",
+    "tags:   design · ai · leadership",
+    "time:   5 min",
+    "",
+    "Not taste. Not process. Intent. AI has raised the baseline",
+    "for everyone — so the question is no longer whether you can",
+    "make something that looks good. The question is whether",
+    "what you make means something.",
+    "",
+    "→ /writing/intent-over-taste",
+  ],
   ls: [
     "drwxr-xr-x  work/",
+    "drwxr-xr-x  writing/",
     "drwxr-xr-x  music/",
     "drwxr-xr-x  coaching/",
     "drwxr-xr-x  contact/",
     "drwxr-xr-x  experiments/",
   ],
-  whoami: ["manu kamath. designer. coach. guitarist. building with ai. currently here."],
+  whoami: ["manu kamath. designer. coach. guitarist. writes monthly-ish. building with ai. currently here."],
   sudo: ["Nice try."],
   exit: ["You sure? Everything good out there?"],
 };
@@ -111,7 +139,8 @@ export function Terminal({ onClose, isMobile }: TerminalProps) {
         return;
       }
 
-      const response = RESPONSES[trimmed];
+      // match full command string first (handles "cat latest"), then first token
+      const response = RESPONSES[trimmed] ?? RESPONSES[trimmed.split(" ")[0]];
       if (response) {
         response.forEach((t) => newLines.push({ type: "output", text: t }));
       } else {

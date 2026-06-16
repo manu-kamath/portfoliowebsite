@@ -37,8 +37,12 @@
 
   /* Accents */
   --accent-green:  #7cba6e;
+  --accent-green-hover: #97ce8b; /* lighter on hover in dark mode */
   --accent-blue:   #5a8ab4;
   --accent-amber:  #d4922a;
+
+  /* Foreground for text/icons sitting on an accent fill */
+  --on-accent: #141414;
 
   /* Borders */
   --border:        rgba(232, 228, 223, 0.08);
@@ -52,6 +56,32 @@
   /* Fonts */
   --font-sans: "Satoshi", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ─── Light mode ────────────────────────────────────────────────────────── */
+:root[data-theme="light"] {
+  --bg:         #f5f3f0;
+  --surface-1:  #eceae7;
+  --surface-2:  #e2e0dc;
+
+  --text-primary:   #1a1917;
+  --text-secondary: #635d58;
+
+  /* Darkened so accents clear WCAG AA (4.5:1) as small text on bg + surfaces */
+  --accent-green:  #357529;
+  --accent-green-hover: #2a5f20; /* darker on hover in light mode */
+  --accent-blue:   #3a6a94;
+  --accent-amber:  #8f5a13;
+
+  /* On a light-mode accent fill, dark accents need light text */
+  --on-accent: #ffffff;
+
+  --border:        rgba(26, 25, 23, 0.08);
+  --border-strong: rgba(26, 25, 23, 0.14);
+
+  --glow-green: 0 0 32px rgba(74, 158, 60, 0.14);
+  --glow-blue:  0 0 32px rgba(58, 106, 148, 0.14);
+  --glow-amber: 0 0 32px rgba(184, 116, 30, 0.14);
 }
 
 /* ─── Tailwind theme bridge ─────────────────────────────────────────────── */

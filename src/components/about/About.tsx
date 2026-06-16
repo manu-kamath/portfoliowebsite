@@ -78,13 +78,33 @@ export function About() {
           </motion.div>
         </div>
 
-        {/* Right — stat bar */}
+        {/* Right — portrait + stat bar */}
         <motion.div
           className="space-y-0"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* ASCII portrait */}
+          <div
+            className="relative mb-8 rounded-lg overflow-hidden"
+            style={{ width: "50%", aspectRatio: "3 / 4" }}
+          >
+            <iframe
+              src="/ascii-portrait.html"
+              title="Manu Kamath ASCII portrait"
+              scrolling="no"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
           {stats.map(({ label, value }, i) => (
             <div
               key={label}

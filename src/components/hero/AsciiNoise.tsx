@@ -5,15 +5,9 @@ import { useEffect, useRef } from "react";
 const CHARS = ".:-=+*#%@";
 const FONT_SIZE = 10;
 const ANIMATION_SPEED = 50;
-const NOISE_OPACITY = 0.2;
-const SHAPE_OPACITY = 0.55;
-const NOISE_COLOR = "#262626";
-const SHAPE_COLOR = "#2e2e2e";
-
-// Person/user icon SVG path (same as dark.html reference)
-const SHAPE_PATH = `<path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />`;
-const SHAPE_VIEWBOX = "0 -960 960 960";
 const SHAPE_CANVAS_SIZE = 128;
+const MK_SHAPE_PATH = `<path d="M38 175L162.762 300L287.524 175V425H38V175Z" fill="white"/><path d="M38 425H287.524L38 175V425Z" fill="white"/><path d="M312.476 175H443.476H562L437.238 300L562 425H312.476V175Z" fill="white"/><path d="M312.476 175V425L562 175H312.476Z" fill="white"/>`;
+const MK_VIEWBOX = "0 0 600 600";
 
 export function AsciiNoise() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,28 +15,22 @@ export function AsciiNoise() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let cols = 0;
-    let rows = 0;
+    let cols = 0, rows = 0;
     let grid: string[][] = [];
     let rafId: number;
 
-    // Off-screen canvas for the shape mask
+    // Shape mask for light mode MK logo
     const shapeCanvas = document.createElement("canvas");
     shapeCanvas.width = SHAPE_CANVAS_SIZE;
     shapeCanvas.height = SHAPE_CANVAS_SIZE;
     const shapeCtx = shapeCanvas.getContext("2d")!;
     let shapeImageData: Uint8ClampedArray | null = null;
 
-    function getChar() {
-      return CHARS[Math.floor(Math.random() * CHARS.length)];
-    }
-
     function loadShape() {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${SHAPE_VIEWBOX}" fill="white">${SHAPE_PATH}</svg>`;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MK_VIEWBOX}">${MK_SHAPE_PATH}</svg>`;
       const img = new Image();
       img.src = `data:image/svg+xml;base64,${btoa(svg)}`;
       img.onload = () => {
@@ -65,6 +53,10 @@ export function AsciiNoise() {
       return shapeImageData[(sy * SHAPE_CANVAS_SIZE + sx) * 4 + 3];
     }
 
+    function getChar() {
+      return CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+
     function resize() {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas!.getBoundingClientRect();
@@ -77,6 +69,7 @@ export function AsciiNoise() {
     }
 
     function draw() {
+      const isLight = document.documentElement.getAttribute("data-theme") === "light";
       const rect = canvas!.getBoundingClientRect();
       ctx!.clearRect(0, 0, rect.width, rect.height);
       ctx!.font = `${FONT_SIZE}px monospace`;
@@ -84,24 +77,24 @@ export function AsciiNoise() {
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
           const char = grid[i][j];
-          const alpha = getShapeAlpha(j, i, rect.width, rect.height);
 
+          const alpha = getShapeAlpha(j, i, rect.width, rect.height);
           if (alpha > 0) {
-            ctx!.fillStyle = SHAPE_COLOR;
-            ctx!.globalAlpha = (alpha / 255) * SHAPE_OPACITY;
+            ctx!.fillStyle = isLight ? "#dbdad8" : "#232323";
+            ctx!.globalAlpha = (alpha / 255) * 1.0;
           } else {
-            ctx!.fillStyle = NOISE_COLOR;
-            ctx!.globalAlpha = NOISE_OPACITY;
+            ctx!.fillStyle = isLight ? "#eae8e5" : "#242424";
+            ctx!.globalAlpha = 0.3;
           }
 
           ctx!.fillText(char, j * FONT_SIZE, i * FONT_SIZE);
+          ctx!.globalAlpha = 1;
 
           if (Math.random() < ANIMATION_SPEED / 1000) {
             grid[i][j] = getChar();
           }
         }
       }
-      ctx!.globalAlpha = 1;
       rafId = requestAnimationFrame(draw);
     }
 
